@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, send_file, Response
 from waitress import serve
 from .hardware_monitor import HWmonitor
 
@@ -7,17 +7,20 @@ class Dashboard:
     """
     The web pannel broadcasting HWmonitor's info.
     """
+
     def __init__(self) -> None:
         self.monitor = HWmonitor()
-        self.app = Flask(f"{self.monitor.hostname}'s monitor",
-                         static_folder="web_monitor/dashboard/static")
+        self.app = Flask(
+            f"{self.monitor.hostname}'s monitor",
+            static_folder="web_monitor/dashboard/static",
+        )
 
         @self.app.route("/")
-        def index() -> None:
+        def index() -> Response:
             return send_file("web_monitor/dashboard/index.html")
 
         @self.app.route("/stats")
-        def stats() -> None:
+        def stats() -> Response:
             return jsonify(
                 {
                     "usage": self.monitor.get_usages(),

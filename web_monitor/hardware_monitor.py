@@ -6,6 +6,7 @@ class HWmonitor:
     """
     HWmonitor will monitor the server.
     """
+
     def __init__(self) -> None:
         self.hostname = socket.gethostname()
         temps = psutil.sensors_temperatures()

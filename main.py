@@ -1,6 +1,7 @@
 from web_monitor import Dashboard
 
-def main():
+
+def main() -> None:
     Dashboard().run()
 
 
