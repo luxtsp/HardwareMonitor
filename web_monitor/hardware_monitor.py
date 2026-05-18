@@ -2,11 +2,10 @@ import psutil
 import socket
 
 
-class IncompatibleHardwareError(Exception):
-    pass
-
-
 class HWmonitor:
+    """
+    HWmonitor will monitor the server.
+    """
     def __init__(self) -> None:
         self.hostname = socket.gethostname()
         temps = psutil.sensors_temperatures()
@@ -24,6 +23,11 @@ class HWmonitor:
                         self.tempkeys["nvme"] = i
 
     def get_temps(self) -> dict[str, float | None]:
+        """
+        returns a dict.\\
+        keys are: "cpu", "gpu", "motherboard", "nvme"\\
+        each key contains a float of the component's temperature in Celsius
+        """
         temp_dict: dict[str, float | None] = {
             "cpu": None,
             "gpu": None,
@@ -37,6 +41,11 @@ class HWmonitor:
         return temp_dict
 
     def get_usages(self) -> dict[str, float | None]:
+        """
+        returns a dict.\\
+        keys are: "cpu", "ram", "storage"\\
+        each key contains a float of the component's usage in percent
+        """
         cpu = psutil.cpu_percent(interval=0.5)
         ram = psutil.virtual_memory().percent
         disk = psutil.disk_usage("/").percent
